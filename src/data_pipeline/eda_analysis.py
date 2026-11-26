@@ -124,8 +124,17 @@ def run_eda(panel_path, output_dir):
 
     print("All EDA charts generated successfully.")
 
+def get_project_root():
+    curr = os.path.dirname(os.path.abspath(__file__))
+    while curr and os.path.dirname(curr) != curr:
+        if os.path.exists(os.path.join(curr, "data")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        curr = os.path.dirname(curr)
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if __name__ == "__main__":
-    panel_csv = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\processed\store_product_week_panel.csv"
-    charts_dir = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\reports\eda_figures"
+    root = get_project_root()
+    panel_csv = os.path.join(root, "data", "processed", "store_product_week_panel.csv")
+    charts_dir = os.path.join(root, "reports", "eda_figures")
 
     run_eda(panel_csv, charts_dir)

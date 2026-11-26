@@ -160,8 +160,17 @@ def generate_retail_data(seed=42):
     
     return df_with_flaws
 
+def get_project_root():
+    curr = os.path.dirname(os.path.abspath(__file__))
+    while curr and os.path.dirname(curr) != curr:
+        if os.path.exists(os.path.join(curr, "data")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        curr = os.path.dirname(curr)
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if __name__ == "__main__":
-    output_dir = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\raw"
+    root = get_project_root()
+    output_dir = os.path.join(root, "data", "raw")
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, "retail_transactions_raw.csv")
     

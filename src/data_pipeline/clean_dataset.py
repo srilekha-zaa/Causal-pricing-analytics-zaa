@@ -147,9 +147,18 @@ def clean_retail_data(raw_path, cleaned_path, report_path):
 
     return df
 
+def get_project_root():
+    curr = os.path.dirname(os.path.abspath(__file__))
+    while curr and os.path.dirname(curr) != curr:
+        if os.path.exists(os.path.join(curr, "data")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        curr = os.path.dirname(curr)
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if __name__ == "__main__":
-    raw_csv = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\raw\retail_transactions_raw.csv"
-    clean_csv = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\processed\retail_transactions_cleaned.csv"
-    report_md = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\reports\data_quality_report.md"
+    root = get_project_root()
+    raw_csv = os.path.join(root, "data", "raw", "retail_transactions_raw.csv")
+    clean_csv = os.path.join(root, "data", "processed", "retail_transactions_cleaned.csv")
+    report_md = os.path.join(root, "reports", "data_quality_report.md")
 
     clean_retail_data(raw_csv, clean_csv, report_md)

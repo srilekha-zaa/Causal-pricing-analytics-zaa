@@ -260,8 +260,17 @@ def create_styled_excel(csv_path, excel_path):
     wb.save(excel_path)
     print(f"Excel workbook created successfully at: {excel_path}")
 
+def get_project_root():
+    curr = os.path.dirname(os.path.abspath(__file__))
+    while curr and os.path.dirname(curr) != curr:
+        if os.path.exists(os.path.join(curr, "data")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        curr = os.path.dirname(curr)
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if __name__ == "__main__":
-    csv_in = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\processed\store_product_week_panel.csv"
-    xlsx_out = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\processed\store_product_week_panel.xlsx"
+    root = get_project_root()
+    csv_in = os.path.join(root, "data", "processed", "store_product_week_panel.csv")
+    xlsx_out = os.path.join(root, "data", "processed", "store_product_week_panel.xlsx")
 
     create_styled_excel(csv_in, xlsx_out)

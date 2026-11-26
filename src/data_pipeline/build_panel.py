@@ -64,8 +64,17 @@ def build_store_week_panel(clean_tx_path, panel_output_path):
 
     return panel
 
+def get_project_root():
+    curr = os.path.dirname(os.path.abspath(__file__))
+    while curr and os.path.dirname(curr) != curr:
+        if os.path.exists(os.path.join(curr, "data")) or os.path.exists(os.path.join(curr, ".git")):
+            return curr
+        curr = os.path.dirname(curr)
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if __name__ == "__main__":
-    clean_csv = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\processed\retail_transactions_cleaned.csv"
-    panel_csv = r"C:\Users\ACER\.gemini\antigravity\scratch\causal-pricing-engine\data\processed\store_product_week_panel.csv"
+    root = get_project_root()
+    clean_csv = os.path.join(root, "data", "processed", "retail_transactions_cleaned.csv")
+    panel_csv = os.path.join(root, "data", "processed", "store_product_week_panel.csv")
 
     build_store_week_panel(clean_csv, panel_csv)
